@@ -1,0 +1,21 @@
+---
+title: "Maunga Whau Volcano"
+author: "Jeremy Voisey"
+date: "7 April 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Maunga Whau Volcano
+
+```{r volcano, message = FALSE, warning=FALSE}
+library(datasets)
+library(plotly)
+data("volcano")
+plot_ly(x = row(volcano) * 10, y = col(volcano) * 10, z = volcano * 10,  type = "surface") %>%
+layout(title = "Topographic map of Maunga Whau", showlegend = FALSE)
+```
+
