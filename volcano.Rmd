@@ -1,17 +1,17 @@
 ---
-title: "Maunga Whau Volcano"
+title: "Plotly examples (coursera)"
 author: "Jeremy Voisey"
 date: "7 April 2017"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning=FALSE)
 ```
 
 ## Maunga Whau Volcano
 
-```{r volcano, message = FALSE, warning=FALSE}
+```{r volcano}
 library(datasets)
 library(plotly)
 data("volcano")
@@ -19,3 +19,21 @@ plot_ly(x = row(volcano) * 10, y = col(volcano) * 10, z = volcano * 10,  type = 
 layout(title = "Topographic map of Maunga Whau", showlegend = FALSE)
 ```
 
+## CPU Performance
+Data from the <a href="https://archive.ics.uci.edu/ml/datasets/Computer+Hardware">UCI Machine Learning Repository</a>
+
+```{r cpu}
+library(plotly)
+url <- "https://archive.ics.uci.edu/ml/machine-learning-databases/cpu-performance/machine.data"
+filename <- "machine.data"
+if (!(file.exists(filename))) {
+    download.file(url, filename)
+}
+cpu <- read.csv(filename, header = FALSE)
+names(cpu) <- c("Vendor", "Model", "CYC", "MinM", "MaxM", "Cache (kb)", "MinChan", "MaxChan", "RPerfPub", "RPerfEst")
+cpu <- subset(cpu, CYC < 300)
+plot_ly(data = cpu, x = ~ CYC, y = ~RPerfEst, color = ~`Cache (kb)`, text = paste(cpu$Vendor, cpu$Model), type = "scatter") %>%
+     layout(title = 'CPU Performance vs Cycle Time',
+         yaxis = list(title = "Performace Index"),
+         xaxis = list(title = "Cycle time (ns)"))
+```
